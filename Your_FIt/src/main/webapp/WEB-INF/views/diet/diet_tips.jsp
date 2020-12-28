@@ -6,10 +6,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
-	<title>Your_Fit</title>
+<meta charset="UTF-8">
+<title>다이어트 꿀팁</title>
 </head>
 <body>
-	<c:import url="views/common/header.jsp"/>
+	<c:import url="../common/header.jsp"/>
 </body>
 </html>
