@@ -173,15 +173,10 @@
 
 								</ul></li>
 								
-							<li class="nav-item dropdown has-submenu col-3"><a
-								class="nav-link dropdown-toggle" href="#" id="dropdown03"
-								data-toggle="dropdown" aria-haspopup="true"
-								aria-expanded="false">칼로리 사전</a>
-								<ul class="dropdown-menu" aria-labelledby="dropdown03">
-									<li><a class="dropdown-item" href="#">음식 칼로리</a></li>
-								</ul>
+							<li class="nav-item col-3">
+								<a class="nav-link color-pink-hover"href="#">칼로리 사전</a>
 							</li>
-
+							
 							<li class="nav-item dropdown has-submenu col-3"><a
 								class="nav-link dropdown-toggle" href="#" id="dropdown04"
 								data-toggle="dropdown" aria-haspopup="true"
