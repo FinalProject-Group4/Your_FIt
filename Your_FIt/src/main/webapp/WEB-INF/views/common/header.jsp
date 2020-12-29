@@ -3,165 +3,226 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<!DOCTYPE html>
-<!-- 부트 스트랩 불러오기 -->
-<link rel="stylesheet"
-	href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
-	integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2"
-	crossorigin="anonymous">
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-	integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-	crossorigin="anonymous"></script>
-<script
-	src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
-	integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
-	crossorigin="anonymous"></script>
-<style>
-#menu_bar {
-	background-color: gainsboro;
-	height: 40px;
-}
+<!-- Basic -->
+<c:set var="path"
+	value="${requestScope['javax.servlet.forward.servlet_path']}" />
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-#menu_bar>ul>li>a, #submenu>ul>li>a {
-	color: black;
-}
+<!-- Mobile Metas -->
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-#logo {
-	text-align: right;
-}
+<!-- Site Metas -->
+<title>Cloapedia - Stylish Magazine Blog Template</title>
+<meta name="keywords" content="">
+<meta name="description" content="">
+<meta name="author" content="">
 
-#submenu {
-	position: absolute;
-	top: 40px;
-	left: 120px;
-	height: 80px;
-	border: 1px solid black;
-}
+<!-- Site Icons -->
+<link rel="shortcut icon"
+	href="${pageContext.request.contextPath}/resources/images/favicon.ico"
+	type="image/x-icon" />
+<link rel="apple-touch-icon"
+	href="${pageContext.request.contextPath}/resources/images/apple-touch-icon.png">
 
-#submenu>ul>li>a {
-	line-height: 60px;
-}
+<!-- Design fonts -->
+<link
+	href="https://fonts.googleapis.com/css?family=Ubuntu:300,400,400i,500,700"
+	rel="stylesheet">
+<link
+	href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,500,700,900"
+	rel="stylesheet">
 
-#submenu2 {
-	left: 120px;
-	background-color: palevioletred;
-}
+<!-- Bootstrap core CSS -->
+<link
+	href="${pageContext.request.contextPath}/resources/css/bootstrap.css"
+	rel="stylesheet">
 
-#submenu2>ul>li>a {
-	color: white;
-}
-</style>
-<header>
-	<c:set var="path" value="${requestScope['javax.servlet.forward.servlet_path']}" /> 
-	<div class="container">
-		<div class="row">
-			<div class="col-12">
-				<div class="row">
-					<a href="${pageContext.request.contextPath}"> 
-						<img src="${pageContext.request.contextPath}/resources/images/logo.png" height="120px"width="120px"> 
-					</a>
-					<div class="col-10" id="menu_bar">
-						<ul class="nav nav-pills nav-justified">
-						<c:if test="${empty member}">
-							<c:if test="${fn:contains(path,'diet')||fn:contains(path,'')}">
-								<li class="nav-item" style="background-color: white"><a class="nav-link" href="${pageContext.request.contextPath}">다이어트 정보</a></li>
-								<li class="nav-item"><a class="nav-link" href="#">쇼핑몰</a></li>
-							</c:if>
-							<c:if test="${fn:contains(path,'shop')}">
-							    <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}">다이어트 정보</a></li>
-								<li class="nav-item" style="background-color: white"><a class="nav-link" href="#">쇼핑몰</a></li>
-							</c:if>
-							<li class="nav-item"><br></li>
-							<li class="nav-item"><br></li>
-							<li class="nav-item"><br></li>
-							<li class="nav-item"><a class="nav-link" href="#">로그인</a></li>
-						</c:if>
-						<c:if test="${!empty member }">
-							<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}">다이어트 정보</a></li>
-							<li class="nav-item"><a class="nav-link" href="#">쇼핑몰</a></li>
-							<li class="nav-item"><br></li>
-							<li class="nav-item"><a class="nav-link" href="#">마이 페이지</a></li>
-							<li class="nav-item"><a class="nav-link" href="#">주문·배송</a></li>
-							<li class="nav-item"><a class="nav-link" href="#">장바구니</a></li>
-						</c:if>
+<!-- FontAwesome Icons core CSS -->
+<link
+	href="${pageContext.request.contextPath}/resources/css/font-awesome.min.css"
+	rel="stylesheet">
+
+<!-- Custom styles for this template -->
+<link href="${pageContext.request.contextPath}/resources/css/style.css"
+	rel="stylesheet">
+
+<!-- Responsive styles for this template -->
+<link
+	href="${pageContext.request.contextPath}/resources/css/responsive.css"
+	rel="stylesheet">
+
+<!-- Colors for this template -->
+<link href="${pageContext.request.contextPath}/resources/css/colors.css"
+	rel="stylesheet">
+
+<!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+<!-- LOADER -->
+<div id="preloader">
+	<img class="preloader"
+		src="${pageContext.request.contextPath}/resources/images/loader.gif"
+		alt="">
+</div>
+<!-- end loader -->
+<!-- END LOADER -->
+
+<div id="wrapper">
+
+	<div class="topbar-section">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-lg-4 col-md-6 col-sm-6 hidden-xs-down">
+					<div class="topsocial">
+						<ul class="list-inline">
+							<li class="list-inline-item"><a href="#">다이어트 정보</a></li>
+							<li class="list-inline-item"><a href="#">쇼핑몰</a></li>
 						</ul>
+						<!-- end ul -->
 					</div>
-					<div class="col-10" id="submenu">
-						<ul class="nav nav-pills nav-justified">
-							<c:choose>
-								<c:when test="${fn:contains(path,'diet')||fn:contains(path,'')}">
-									<li class="nav-item" id="diet_tips"><a class="nav-link" href="${pageContext.request.contextPath}/diet/diet_tips.do">다이어트꿀팁</a></li>
-									<li class="nav-item" id="home_training"><a class="nav-link" href="${pageContext.request.contextPath}/diet/home_training.do">홈트레이닝</a></li>
-									<li class="nav-item" id="cal_dictonary"><a class="nav-link" href="${pageContext.request.contextPath}/diet/cal_dictonary.do">칼로리사전</a></li>
-									<li class="nav-item" id="comunity"><a class="nav-link" href="${pageContext.request.contextPath}/diet/comunity.do">커뮤니티</a></li>
-								</c:when>
-								<c:when test="${fn:contains(path,'shop')}">
-									<li class="nav-item"><a class="nav-link" href="#">카테고리</a></li>
-									<li class="nav-item"><a class="nav-link" href="#">베스트상품</a></li>
-									<li class="nav-item"><a class="nav-link" href="#">할인상품</a></li>
-									<li class="nav-item"><a class="nav-link" href="#">신상품</a></li>
-									<form class="form-inline my-2 my-lg-0">
-										<input class="form-control mr-sm-2" type="search"placeholder="Search" aria-label="Search">
-										<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-									</form>
-								</c:when>
-							</c:choose>
+					<!-- end social -->
+				</div>
+				<!-- end col -->
+
+				<div class="col-lg-8 hidden-md-down">
+					<div class="topmenu text-right">
+						<ul class="list-inline">
+							<c:if test="${empty member}">
+								<li class="list-inline-item"><a href="#"><i
+										class="fa fa-user-circle-o"></i> 로그인</a></li>
+								<li class="list-inline-item"><a href="#"><i
+										class="fa fa-user-circle-o"></i> 회원가입</a></li>
+							</c:if>
+							<c:if test="${!empty member}">
+								<li class="list-inline-item"><a href="#"><i
+										class="fa fa-user-circle-o"></i>${member.userName}님 안녕하세요</a></li>
+								<li class="list-inline-item"><a href="#">로그아웃</a></li>
+								<li class="list-inline-item"><a href="#">마이페이지</a></li>
+								<li class="list-inline-item"><a href="#">주문배송조회</a></li>
+								<li class="list-inline-item"><a href="#">장바구니</a></li>
+							</c:if>
 						</ul>
+						<!-- end ul -->
 					</div>
+					<!-- end topmenu -->
+				</div>
+				<!-- end col -->
+
+			</div>
+			<!-- end row -->
+		</div>
+		<!-- end header-logo -->
+	</div>
+	<!-- end topbar -->
+
+	<div class="header-section">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="logo">
+						<a href="${pageContext.request.contextPath}">
+							<img src="${pageContext.request.contextPath}/resources/images/logo.png">
+						</a>
+					</div>
+					<!-- end logo -->
 				</div>
 			</div>
-			<div class="col-10" id="submenu2">
-				<ul class="nav nav-pills nav-justified">
-				<c:choose>
-					<c:when test="${fn:contains(path,'diet')&&fn:contains(path,'diet_tips')}">
-							<li class="nav-item"><a class="nav-link" href="#">전체</a></li>
-							<li class="nav-item"><a class="nav-link" href="#">칼럼</a></li>
-							<li class="nav-item"><a class="nav-link" href="#">운동</a></li>
-							<li class="nav-item"><a class="nav-link" href="#">식단</a></li>
-							<script>
-								$("#diet_tips").css('background-color','gainsboro');
-							</script>
-					</c:when>
-					<c:when test="${fn:contains(path,'diet')&&fn:contains(path,'home_training')}">
-							<li class="nav-item"><a class="nav-link" href="#">전체</a></li>
-							<li class="nav-item"><a class="nav-link" href="#">전신</a></li>
-							<li class="nav-item"><a class="nav-link" href="#">복부</a></li>
-							<li class="nav-item"><a class="nav-link" href="#">상체</a></li>
-							<li class="nav-item"><a class="nav-link" href="#">하체</a></li>
-							<li class="nav-item"><a class="nav-link" href="#">스트레칭</a></li>
-							<script>
-								$("#home_training").css('background-color','gainsboro');
-							</script>
-					</c:when>
-					<c:when test="${fn:contains(path,'diet')&&fn:contains(path,'cal_dictonary')}">
-							<li class="nav-item"><a class="nav-link" href="#">음식 칼로리</a></li>
-							<li class="nav-item"><a class="nav-link" href="#">운동 칼로리</a></li>
-							<script>
-								$("#cal_dictonary").css('background-color','gainsboro');
-							</script>
-					</c:when>
-					<c:when test="${fn:contains(path,'diet')&&fn:contains(path,'comunity')}">
-							<li class="nav-item"><a class="nav-link" href="#">전체</a></li>
-							<li class="nav-item"><a class="nav-link" href="#">식단</a></li>
-							<li class="nav-item"><a class="nav-link" href="#">운동</a></li>
-							<li class="nav-item"><a class="nav-link" href="#">팁 & 노하우</a></li>
-							<li class="nav-item"><a class="nav-link" href="#">고민 & 질문</a></li>
-							<li class="nav-item"><a class="nav-link" href="#">관리자에게</a></li>
-							<script>
-								$("#comunity").css('background-color','gainsboro');
-							</script>
-					</c:when>
-					<c:when test="${fn:contains(path,'shop')&&fn:contains(path,'category')}">
-							<li class="nav-item"><a class="nav-link" href="#">전체</a></li>
-							<li class="nav-item"><a class="nav-link" href="#">해산물</a></li>
-							<li class="nav-item"><a class="nav-link" href="#">육류</a></li>
-							<li class="nav-item"><a class="nav-link" href="#">채소</a></li>
-							<li class="nav-item"><a class="nav-link" href="#">야채</a></li>
-							<li class="nav-item"><a class="nav-link" href="#">가공식품</a></li>
-					</c:when>
-				</c:choose>
-				</ul>
-			</div>
+			<!-- end row -->
 		</div>
+		<!-- end header-logo -->
 	</div>
-</header>
+	<!-- end header -->
+
+	<header class="header">
+		<div class="container">
+			<nav class="navbar navbar-inverse navbar-toggleable-md">
+				<button class="navbar-toggler" type="button" data-toggle="collapse"
+					data-target="#cloapediamenu" aria-controls="cloapediamenu"
+					aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="cloapediamenu">
+					<ul class="navbar-nav col-12">
+						<c:if test="${fn:contains(path,'diet')||fn:contains(path,'')}">
+							<li class="nav-item dropdown has-submenu col-3"><a
+								class="nav-link dropdown-toggle" href="#" id="dropdown01"
+								data-toggle="dropdown" aria-haspopup="true"
+								aria-expanded="false">다이어트 꿀팁</a>
+								<ul class="dropdown-menu" aria-labelledby="dropdown01">
+									<li><a class="dropdown-item" href="#">전체</a></li>
+									<li><a class="dropdown-item" href="#">칼럼</a></li>
+									<li><a class="dropdown-item" href="#">운동</a></li>
+									<li><a class="dropdown-item" href="#">식단</a></li>
+								</ul></li>
+
+							<li class="nav-item dropdown has-submenu col-3"><a
+								class="nav-link dropdown-toggle" href="#" id="dropdown02"
+								data-toggle="dropdown" aria-haspopup="true"
+								aria-expanded="false">홈트레이닝</a>
+								<ul class="dropdown-menu" aria-labelledby="dropdown02">
+									<li><a class="dropdown-item" href="#">전체</a></li>
+									<li><a class="dropdown-item" href="#">전신</a></li>
+									<li><a class="dropdown-item" href="#">복부</a></li>
+									<li><a class="dropdown-item" href="#">상체</a></li>
+									<li><a class="dropdown-item" href="#">하체</a></li>
+									<li><a class="dropdown-item" href="#">스트레칭</a></li>
+
+								</ul></li>
+								
+							<li class="nav-item dropdown has-submenu col-3"><a
+								class="nav-link dropdown-toggle" href="#" id="dropdown03"
+								data-toggle="dropdown" aria-haspopup="true"
+								aria-expanded="false">칼로리 사전</a>
+								<ul class="dropdown-menu" aria-labelledby="dropdown03">
+									<li><a class="dropdown-item" href="#">음식 칼로리</a></li>
+								</ul>
+							</li>
+
+							<li class="nav-item dropdown has-submenu col-3"><a
+								class="nav-link dropdown-toggle" href="#" id="dropdown04"
+								data-toggle="dropdown" aria-haspopup="true"
+								aria-expanded="false">커뮤니티</a>
+								<ul class="dropdown-menu" aria-labelledby="dropdown04">
+									<li><a class="dropdown-item" href="#">전체</a></li>
+									<li><a class="dropdown-item" href="#">식단</a></li>
+									<li><a class="dropdown-item" href="#">운동</a></li>
+									<li><a class="dropdown-item" href="#">팁&노하우</a></li>
+									<li><a class="dropdown-item" href="#">고민&질문</a></li>
+									<li><a class="dropdown-item" href="#">관리자에게</a></li>
+								</ul></li>
+						</c:if>
+						
+						<c:if test="${fn:contains(path,'shop')}">
+							<li class="nav-item dropdown has-submenu col-2"><a
+								class="nav-link dropdown-toggle" href="#" id="shop_dropdown01"
+								data-toggle="dropdown" aria-haspopup="true"
+								aria-expanded="false">카테고리</a>
+								<ul class="dropdown-menu" aria-labelledby="shop_dropdown01">
+									<li><a class="dropdown-item" href="#">야채·채소류</a></li>
+									<li><a class="dropdown-item" href="#">육류</a></li>
+									<li><a class="dropdown-item" href="#">해산물류</a></li>
+									<li><a class="dropdown-item" href="#">가공식품</a></li>
+								</ul></li>
+							<li class="nav-item col-2"><a class="nav-link color-pink-hover"
+								href="#">신상품</a></li>
+							<li class="nav-item col-2"><a class="nav-link color-pink-hover"
+								href="#">베스트 상품</a></li>
+							<li class="nav-item col-2"><a class="nav-link color-pink-hover"
+								href="#">할인 상품</a></li>
+    						<form class="form-inline my-2 my-lg-0 col-4">
+      							<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+      							<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    						</form>
+						</c:if>
+					</ul>
+				</div>
+			</nav>
+		</div>
+		</div>
+		<!-- end container -->
+	</header>
+	<!-- end header -->
