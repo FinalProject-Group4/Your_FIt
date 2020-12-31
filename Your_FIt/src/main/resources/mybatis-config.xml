@@ -9,6 +9,7 @@
 	</settings>
 
 	<typeAliases>
+		<typeAlias type="com.kh.yourfit.member.model.vo.Member" alias="Member"/>
 	</typeAliases>
 	
 	<typeHandlers>
