@@ -9,6 +9,7 @@
 	</settings>
 
 	<typeAliases>
+		<typeAlias type="com.kh.yourfit.member.model.vo.Member" alias="Member" />
 		<typeAlias type="com.kh.yourfit.dtboard.model.vo.DtBoard" alias="DtBoard"/>
 		<typeAlias type="com.kh.yourfit.dtboard.model.vo.BoardFile" alias="BoardFile" />
 	</typeAliases>
