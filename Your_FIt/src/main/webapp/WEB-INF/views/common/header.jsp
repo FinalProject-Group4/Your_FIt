@@ -209,9 +209,8 @@
 
 									</ul></li>
 
-								<li class="nav-item col-3"><a
-									class="nav-link color-pink-hover" href="#" id="dropdown03">칼로리
-										사전</a></li>
+								<li class="nav-item col-3"><a class="nav-link color-pink-hover" 
+									href="${pageContext.request.contextPath}/cbBoard/cbBoard.do" id="dropdown03">칼로리 사전</a></li>
 
 								<li class="nav-item dropdown has-submenu col-3"><a
 									class="nav-link dropdown-toggle" href="#" id="dropdown04"

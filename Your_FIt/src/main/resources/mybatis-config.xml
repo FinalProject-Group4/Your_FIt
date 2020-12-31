@@ -10,6 +10,7 @@
 
 	<typeAliases>
 		<typeAlias type="com.kh.yourfit.member.model.vo.Member" alias="Member"/>
+		<typeAlias type="com.kh.yourfit.cbBoard.model.vo.cbBoard" alias="cbBoard" />
 	</typeAliases>
 	
 	<typeHandlers>

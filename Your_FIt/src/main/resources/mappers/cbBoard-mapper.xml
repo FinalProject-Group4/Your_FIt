@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cbBoard">
+
+	<resultMap type="cbBoard" id="cbBoard"></resultMap>
+	
+	<select id="selectcbBoard" resultMap="cbBoard">
+		SELECT * FROM CAL_BOARD
+	</select>
+	
+	<select id="selectcbBoardTotalContents" resultType="_int">
+		SELECT COUNT(*) FROM CAL_BOARD
+	</select>
+	
+	<insert id="insertcbBoard" parameterType="cbBoard" > 
+		INSERT INTO CAL_BOARD VALUES ( 'CB'||CAL_BOARD_SEQ.NEXTVAL, #{cb_foodname}, #{cb_unit}, #{cb_cal}, #{cb_carbohydrate}, #{cb_protein}, #{cb_fat}, 1)
+	</insert>
+	
+	<select id="selectOnecbBoard" parameterType="String" resultType="cbBoard">
+		SELECT * FROM CAL_BOARD WHERE CB_NO = #{cb_no}
+	</select>
+		
+	<select id="cbBoardUpdateView" parameterType="String" resultType="cbBoard">
+		SELECT * FROM CAL_BOARD WHERE CB_NO = #{cb_no}
+	</select>
+	
+	<update id="updatecbBoard" parameterType="cbBoard">
+		UPDATE CAL_BOARD
+		SET CB_FOODNAME = #{cb_foodname},
+		    CB_UNIT = #{cb_unit},
+		    CB_CAL = #{cb_cal},
+		    CB_CARBOHYDRATE = #{cb_carbohydrate},
+		    CB_PROTEIN = #{cb_protein},
+		    CB_FAT = #{cb_fat}		    
+		WHERE CB_NO = #{cb_no}
+	</update>
+	
+	<delete id="deletecbBoard" parameterType="String">
+		DELETE FROM CAL_BOARD
+		WHERE CB_NO = #{cb_no}
+	</delete>
+	
+	<select id="cbBoardSearch" parameterType="String" resultMap="cbBoard">
+		SELECT * FROM CAL_BOARD
+		WHERE CB_FOODNAME LIKE '%' || #{keyword} || '%'
+	</select>
+	
+	<select id="cbBoardSearchCnt" parameterType="String" resultType="int">
+		SELECT COUNT(*) FROM CAL_BOARD
+		WHERE CB_FOODNAME LIKE '%' || #{keyword} || '%'
+	</select>
+</mapper>
+
+
