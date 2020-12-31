@@ -9,8 +9,11 @@
 	</settings>
 
 	<typeAliases>
+		<typeAlias type="com.kh.yourfit.dtboard.model.vo.DtBoard" alias="DtBoard"/>
+		<typeAlias type="com.kh.yourfit.dtboard.model.vo.BoardFile" alias="BoardFile" />
 	</typeAliases>
 	
 	<typeHandlers>
 	</typeHandlers>
 </configuration>
+
