@@ -189,7 +189,7 @@
 									data-toggle="dropdown" aria-haspopup="true"
 									aria-expanded="false">다이어트 꿀팁</a>
 									<ul class="dropdown-menu col-3" aria-labelledby="dropdown01">
-										<li><a class="dropdown-item" href="${pageContext.request.contextPath}/dtboard/dtBoardList.do">전체</a></li>
+										<li><a class="dropdown-item" href="#">전체</a></li>
 										<li><a class="dropdown-item" href="#">칼럼</a></li>
 										<li><a class="dropdown-item" href="#">운동</a></li>
 										<li><a class="dropdown-item" href="#">식단</a></li>
@@ -218,7 +218,7 @@
 									data-toggle="dropdown" aria-haspopup="true"
 									aria-expanded="false">커뮤니티</a>
 									<ul class="dropdown-menu" aria-labelledby="dropdown04">
-										<li><a class="dropdown-item" href="${pageContext.request.contextPath}/board/coList.do">전체</a></li>
+										<li><a class="dropdown-item" href="#">전체</a></li>
 										<li><a class="dropdown-item" href="#">식단</a></li>
 										<li><a class="dropdown-item" href="#">운동</a></li>
 										<li><a class="dropdown-item" href="#">팁&노하우</a></li>

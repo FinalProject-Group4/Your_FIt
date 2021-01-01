@@ -6,7 +6,10 @@
 		<id property="dt_No" column="dt_No"/>
 		<result property="dt_Title" column="dt_Title"/>
 		<result property="dt_Content" column="DT_CONTENT"/>
-		<collection property="files" ofType="BoardFile" column="F_DTNO">
+		<result property="dt_Count" column="DT_COUNT" />
+		<result property="dt_Type" column="DT_TYPE" />
+		<result property="dt_Mno" column="DT_MNO" />
+		<collection property="files" ofType="boardfile">
 			<id property="f_No" column="f_No"/>
 			<result property="f_Cname" column="F_CNAME" />
 		</collection>
@@ -14,11 +17,11 @@
 	
 	<select id="selectBoardList" resultMap="resultDtBoard">
 		SELECT *
-		FROM DT_BOARD B 
-		JOIN BOARD_FILE BF 
-		ON(B.DT_NO = BF.F_DTNO) 
-		WHERE B.STATUS = 'Y'
-		ORDER BY B.DT_NO
+		FROM DT_BOARD
+		JOIN BOARD_FILE ON(DT_BOARD.DT_NO = BOARD_FILE.F_DTNO)
+		JOIN MEMBER ON(DT_MNO = MEMBER.M_NO)
+		WHERE DT_BOARD.STATUS = 'Y'
+		ORDER BY DT_NO DESC
 	</select>
 	<select id="selectBoardTotalContents" resultType="_int">
 		SELECT COUNT(*) FROM DT_BOARD
@@ -29,7 +32,7 @@
 		VALUES('DT'||DT_BOARD_SEQ.NEXTVAL, #{dt_Type}, #{dt_Title}, #{dt_Content}, 0, #{dt_Mno}, 'Y')
 	</insert>
 	
-	<insert id="insertBoardFile" parameterType="BoardFile">
+	<insert id="insertBoardFile" parameterType="boardfile">
 		
 		<selectKey keyProperty="dt_No" resultType="string" order="BEFORE">
 			SELECT DT_BOARD_SEQ.CURRVAL FROM DUAL
@@ -39,14 +42,16 @@
 		VALUES(BOARD_FILE_SEQ.NEXTVAL, 'DT'||#{dt_No}, '1', #{f_Name}, #{f_Cname}, SYSDATE)
 	</insert>
 	
-	<select id="selectOneBoard" resultMap="resultDtBoard">
-		SELECT * FROM DT_BOARD B
-		JOIN BOARD_FILE BF
-		ON(B.DT_NO = BF.F_DTNO)
-		WHERE B.DT_NO = #{dt_No}
+	<select id="selectOneBoard" parameterType="string" resultType="DtBoard">
+		SELECT DT.*, 
+        (SELECT M_NICK FROM MEMBER WHERE M_NO = DT.DT_MNO) NICK,
+        (SELECT F_CNAME FROM BOARD_FILE WHERE F_DTNO = DT.DT_NO) NO
+		FROM DT_BOARD DT
+        WHERE DT_NO = #{dt_No}
+        
 	</select>
 	
-	<select id="selectBoardFileList" resultType="BoardFile">
+	<select id="selectBoardFileList" resultType="boardfile">
 		SELECT * FROM BOARD_FILE WHERE F_DTNO = #{f_Dtno}
 	</select>
 
@@ -63,7 +68,7 @@
 		WHERE DT_NO = #{dt_No}
 	</update>
 	
-	<insert id="updateBoardFile" parameterType="BoardFile">
+	<insert id="updateBoardFile" parameterType="boardfile">
 		INSERT INTO BOARD_FILE(F_NO, F_DTNO, F_TYPE, F_NAME, F_CNAME, F_UPLOADDATE) VALUES
 		(BOARD_FILE_SEQ.NEXTVAL, #{f_Dtno}, '1', #{f_Name}, #{f_Cname},
 		 SYSDATE )

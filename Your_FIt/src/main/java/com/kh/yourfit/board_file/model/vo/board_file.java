@@ -1,6 +1,8 @@
-package com.kh.yourfit.dtboard.model.vo;
+package com.kh.yourfit.board_file.model.vo;
 
 import java.sql.Date;
+import java.util.List;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,8 +15,7 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class BoardFile {
-	
+public class board_file {
 	private int f_No;
 	private int f_Type;
 	private String f_Name;
@@ -26,5 +27,6 @@ public class BoardFile {
 	private String f_Dtno;
 	private int f_Adno;
 	private int f_Eno;
+	private String co_No;
 	private String dt_No;
 }

@@ -8,8 +8,8 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.kh.yourfit.board_file.model.vo.board_file;
 
-import com.kh.yourfit.dtboard.model.vo.BoardFile;
 import com.kh.yourfit.dtboard.model.vo.DtBoard;
 
 @Repository
@@ -19,7 +19,7 @@ public class DtBoardDAOImpl implements DtBoardDAO{
 	SqlSessionTemplate sqlSession;
 	
 	@Override
-	public List<Map<String, Object>> selectBoardList(int cPage, int numPerPage) {
+	public List<Map<String, String>> selectBoardList(int cPage, int numPerPage) {
 		RowBounds rows = new RowBounds((cPage-1)*numPerPage, numPerPage);
 		
 		return sqlSession.selectList("dtBoardMapper.selectBoardList", null, rows);
@@ -38,7 +38,7 @@ public class DtBoardDAOImpl implements DtBoardDAO{
 	}
 
 	@Override
-	public int insertBoardFile(BoardFile bf) {
+	public int insertBoardFile(board_file bf) {
 		
 		return sqlSession.insert("dtBoardMapper.insertBoardFile", bf);
 	}
@@ -50,7 +50,7 @@ public class DtBoardDAOImpl implements DtBoardDAO{
 	}
 
 	@Override
-	public List<BoardFile> selectBoardFileList(String dt_No) {
+	public List<board_file> selectBoardFileList(String dt_No) {
 		
 		return sqlSession.selectList("dtBoardMapper.selectBoardFileList", dt_No);
 	}
@@ -68,7 +68,7 @@ public class DtBoardDAOImpl implements DtBoardDAO{
 	}
 
 	@Override
-	public int updateBoardFile(BoardFile bf) {
+	public int updateBoardFile(board_file bf) {
 		
 		return sqlSession.insert("dtBoardMapper.updateBoardFile", bf);
 	}

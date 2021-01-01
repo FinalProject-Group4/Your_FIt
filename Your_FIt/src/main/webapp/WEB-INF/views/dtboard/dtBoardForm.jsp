@@ -161,7 +161,7 @@
 				      	</tr>
 				      	<tr>
 				      		<th style="vertical-align: middle;">작성자</th>
-							<td colspan="10" title=""></td>     		
+							<td colspan="10" title="" readonly>${ member.m_Nick }</td>     		
 				      	</tr>
 				      	<tr>
 				      		<th style="vertical-align: middle;">첨부 파일</th>
@@ -180,7 +180,7 @@
 				    
 				    <br/>
 				    <div>
-				    	<button class="btn btn-default"><a href="" style="color: #333; align:left;">목록으로</a></button>
+				    	<button class="btn btn-default"><a href="${pageContext.request.contextPath}/dtboard/dtBoardList.do" style="color: #333; align:left;">목록으로</a></button>
 				      	<button class="btn btn-default" type="reset" id="btnReset">취소</button>
 				    	<button class="btn btn-default" type="submit">등록</button>
 				    </div>

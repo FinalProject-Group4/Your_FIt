@@ -170,7 +170,7 @@ th {
 				<form action="${pageContext.request.contextPath}/dtboard/dtBoardUpdate.do"
 				      method="post" onsubmit="return validate();" enctype="multipart/form-data">
 				     <input type="hidden" name="dt_No" value="${ dtboard.dt_No }"/>
-		      		<input type="hidden" name="dt_Mno" value="1" />
+		      		<input type="hidden" name="dt_board.Nick" value="${ dt_board.nick }" />
 		      		<input type="hidden" name="dt_Type" value="1" />
 				    <table  class="sub_news" border="1px solid gray" align="center" >
 				      	<tr>
@@ -179,7 +179,7 @@ th {
 				      	</tr>
 				      	<tr>
 				      		<th style="vertical-align: middle;">작성자</th>
-							<td colspan="10" title=""></td>     		
+							<td colspan="10" title="">${ dt_board.nick } </td>     		
 				      	</tr>
 				      	<tr>
 				      		<th style="vertical-align: middle;">첨부 파일</th>

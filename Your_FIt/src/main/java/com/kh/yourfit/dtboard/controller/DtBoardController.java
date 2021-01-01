@@ -2,7 +2,6 @@ package com.kh.yourfit.dtboard.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.MulticastSocket;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -19,9 +18,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.kh.yourfit.board_file.model.vo.board_file;
 import com.kh.yourfit.common.util.Utils;
 import com.kh.yourfit.dtboard.model.service.DtBoardService;
-import com.kh.yourfit.dtboard.model.vo.BoardFile;
 import com.kh.yourfit.dtboard.model.vo.DtBoard;
 
 @Controller
@@ -36,13 +35,14 @@ public class DtBoardController {
 		
 		int numPerPage = 10;
 	
-		List<Map<String, Object>> list = dtBoardService.selectBoardList(cPage, numPerPage);
+		List<Map<String, String>> list = dtBoardService.selectBoardList(cPage, numPerPage);
 		
 		int totalContents = dtBoardService.selectBoardTotalContents();
 		
 		String pageBar = Utils.getPageBar(totalContents, cPage, numPerPage, "dtBoardList.do");
 		
 		System.out.println("list : " + list);
+		
 		
 		model.addAttribute("list", list);
 		model.addAttribute("totalContents", totalContents);
@@ -62,10 +62,10 @@ public class DtBoardController {
 			// 1. 파일 저장 경로와 파일 정보를 담을 객체 생성
 				String saveDirectory
 				      = req.getServletContext().getRealPath("/resources/dtboardUpload");
-				List<BoardFile> fileList = new ArrayList<BoardFile>();
+				List<board_file> fileList = new ArrayList<board_file>();
 				
 				for(MultipartFile f : upFiles) {
-					 // System.out.println("결과 : " + f.getOriginalFilename());
+					  System.out.println("결과 : " + f.getOriginalFilename());
 					if( f.isEmpty() == false) {
 						
 						String originName = f.getOriginalFilename();
@@ -77,7 +77,7 @@ public class DtBoardController {
 							e.printStackTrace();
 						}
 						// 3. list에 담기
-						BoardFile bf = new BoardFile();
+						board_file bf = new board_file();
 						bf.setF_Name(originName);
 						bf.setF_Cname(changeName);
 						
@@ -106,7 +106,7 @@ public class DtBoardController {
 	public String dtBoardView(@RequestParam String no, Model model) {
 		
 		DtBoard dtboard = dtBoardService.selectOneBoard(no);
-		List<BoardFile> boardfileList = dtBoardService.selectBoardFileList(no);
+		List<board_file> boardfileList = dtBoardService.selectBoardFileList(no);
 		
 		model.addAttribute("dtboard", dtboard);
 		model.addAttribute("boardfileList", boardfileList);
@@ -118,7 +118,7 @@ public class DtBoardController {
 	public String dtBoardUpdateView(@RequestParam String dt_No, Model model) {
 		
 		DtBoard dtboard = dtBoardService.updateView(dt_No);
-		List<BoardFile> boardfileList = dtBoardService.selectBoardFileList(dt_No);
+		List<board_file> boardfileList = dtBoardService.selectBoardFileList(dt_No);
 		
 		model.addAttribute("dtboard", dtboard);
 		model.addAttribute("boardfileList", boardfileList);
@@ -148,13 +148,13 @@ public class DtBoardController {
 			String saveDirectory = req.getServletContext().getRealPath("/resources/dtboardUpload");
 				
 			// 원본 첨부파일 목록
-			List<BoardFile> boardfileList = dtBoardService.selectBoardFileList(dt_No);
-			if( boardfileList == null ) boardfileList = new ArrayList<BoardFile>();
+			List<board_file> boardfileList = dtBoardService.selectBoardFileList(dt_No);
+			if( boardfileList == null ) boardfileList = new ArrayList<board_file>();
 				//System.out.println("결과1 : " + boardfileList);
 			// 2. 변경한 파일 정보 업로드 시작!
 			int idx = 0;
 			for(MultipartFile f : upFiles) {
-				BoardFile bf = null;
+				board_file bf = null;
 					
 					if( f.isEmpty() == false ) {
 						
@@ -169,7 +169,7 @@ public class DtBoardController {
 							
 							bf = boardfileList.get(idx);
 						} else {
-							bf = new BoardFile();
+							bf = new board_file();
 							bf.setDt_No(dt_No);
 							
 							boardfileList.add(bf);
@@ -228,7 +228,7 @@ public class DtBoardController {
 			String saveDir = req.getServletContext().getRealPath("/resources/dtboardUpload");
 				
 			// 첨부파일 삭제 명단
-			List<BoardFile> delList = dtBoardService.selectBoardFileList(dt_No);
+			List<board_file> delList = dtBoardService.selectBoardFileList(dt_No);
 				
 			// 2. DB 정보 삭제하기
 			int result = dtBoardService.deleteBoard(dt_No);
@@ -240,7 +240,7 @@ public class DtBoardController {
 					msg = "게시글 삭제 완료!";
 					
 					// 3. 실제 파일 지우기
-					for(BoardFile bf : delList) {
+					for(board_file bf : delList) {
 						new File(saveDir + "/" + bf.getF_Cname()).delete();
 					}
 					

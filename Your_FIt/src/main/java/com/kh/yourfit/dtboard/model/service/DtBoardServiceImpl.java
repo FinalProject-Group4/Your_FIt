@@ -6,10 +6,9 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
+import com.kh.yourfit.board_file.model.vo.board_file;
 import com.kh.yourfit.common.exception.DtBoardException;
 import com.kh.yourfit.dtboard.model.dao.DtBoardDAO;
-import com.kh.yourfit.dtboard.model.vo.BoardFile;
 import com.kh.yourfit.dtboard.model.vo.DtBoard;
 
 @Service
@@ -19,7 +18,7 @@ public class DtBoardServiceImpl implements DtBoardService {
 	DtBoardDAO dtBoardDAO;
 	
 	@Override
-	public List<Map<String, Object>> selectBoardList(int cPage, int numPerPage) {
+	public List<Map<String, String>> selectBoardList(int cPage, int numPerPage) {
 		
 		return dtBoardDAO.selectBoardList(cPage, numPerPage);
 	}
@@ -32,13 +31,13 @@ public class DtBoardServiceImpl implements DtBoardService {
 
 
 	@Override
-	public int insertBoard(DtBoard dtboard, List<BoardFile> fileList) {
+	public int insertBoard(DtBoard dtboard, List<board_file> fileList) {
 		int result1 = dtBoardDAO.insertBoard(dtboard);
 		
 		if( result1 == 0 ) throw new DtBoardException("게시글 등록오류");
 		
 		if(fileList.size() > 0) {
-			for(BoardFile bf : fileList) {
+			for(board_file bf : fileList) {
 				int result2 = dtBoardDAO.insertBoardFile(bf);
 				if( result2 == 0 ) throw new DtBoardException("첨부파일 등록오류");
 			}
@@ -58,7 +57,7 @@ public class DtBoardServiceImpl implements DtBoardService {
 	}
 
 	@Override
-	public List<BoardFile> selectBoardFileList(String dt_No) {
+	public List<board_file> selectBoardFileList(String dt_No) {
 		
 		return dtBoardDAO.selectBoardFileList(dt_No);
 	}
@@ -70,11 +69,11 @@ public class DtBoardServiceImpl implements DtBoardService {
 	}
 
 	@Override
-	public int updateBoard(DtBoard dtboard, List<BoardFile> boardfileList) {
+	public int updateBoard(DtBoard dtboard, List<board_file> boardfileList) {
 		int totalResult = 0;
 		
 		// 원본을 먼저 받아오기
-		List<BoardFile> originList = dtBoardDAO.selectBoardFileList(dtboard.getDt_No());
+		List<board_file> originList = dtBoardDAO.selectBoardFileList(dtboard.getDt_No());
 		
 		totalResult = dtBoardDAO.updateBoard(dtboard);
 		
@@ -89,7 +88,7 @@ public class DtBoardServiceImpl implements DtBoardService {
 		
 		// 이전의 첨부파일은 없고, 새로 추가한 첨부파일이 있다면
 		if( boardfileList.size() > 0) {
-			for(BoardFile bf : boardfileList) {
+			for(board_file bf : boardfileList) {
 				 // update라고 쓰지만, SQL은 insert로!
 				totalResult = dtBoardDAO.updateBoardFile(bf);
 				

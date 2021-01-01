@@ -9,8 +9,6 @@
 <meta charset="UTF-8">
 <title>list</title>
 
-	
-
 	<style>
 		table {
 			width : 70%;	
@@ -44,8 +42,10 @@
 					<tr>
 						<th>번호</th>
 						<th>사진</th>
+						<th>작성자</th>
 						<th>제목</th>
 						<th>내용</th>
+						<th>조회수</th>
 						
 					</tr>
 					<c:forEach items="${list}" var="b"> 
@@ -60,9 +60,10 @@
 									X
 							</c:if>
 						</td>
+						<td>${b.dt_Mno}</td>
 						<td><a href="${pageContext.request.contextPath}/dtboard/dtBoardView.do?no=${b.dt_No}">${b.dt_Title}</a></td>
 						<td>${b.dt_Content}</td>
-						
+						<td>${b.dt_Count}</td>
 					</tr>
 					</c:forEach>
 				</table>

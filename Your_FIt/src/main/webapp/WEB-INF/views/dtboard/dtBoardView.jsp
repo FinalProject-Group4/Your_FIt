@@ -56,7 +56,7 @@
             </tr>
             <tr>
                 <th>작성자</th>
-                <td></td>
+                <td>${ dtboard.dt_Mno }</td>
             </tr>
             <tr>
                 <th>내용</th>
