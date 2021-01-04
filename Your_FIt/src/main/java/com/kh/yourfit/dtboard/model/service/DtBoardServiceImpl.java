@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.kh.yourfit.board_comment.model.vo.board_comment;
 import com.kh.yourfit.board_file.model.vo.board_file;
 import com.kh.yourfit.common.exception.DtBoardException;
 import com.kh.yourfit.dtboard.model.dao.DtBoardDAO;
@@ -111,6 +112,43 @@ public class DtBoardServiceImpl implements DtBoardService {
 		return dtBoardDAO.deleteFile(fNo);
 	}
 
+	
+	@Override
+	public int insertboardComment(board_comment board_comment) {
+		
+		return dtBoardDAO.insertboardComment(board_comment);
+	}
+
+	@Override
+	public List<board_comment> selectBoardComment(String dt_No) {
+		
+			System.out.println("dt_No : " + dt_No);
+		return dtBoardDAO.selectBoardComment(dt_No);
+	}
+
+	@Override
+	public int updateComment(board_comment board_comment) {
+		
+		return dtBoardDAO.updateComment(board_comment);
+	}
+
+	@Override
+	public List<Map<String, String>> selectBoardListCal(int cPage, int numPerPage) {
+		
+		return dtBoardDAO.selectBoardListCal(cPage, numPerPage);
+	}
+
+	@Override
+	public List<Map<String, String>> selectBoardListExe(int cPage, int numPerPage) {
+		
+		return dtBoardDAO.selectBoardListExe(cPage, numPerPage);
+	}
+
+	@Override
+	public List<Map<String, String>> selectBoardListDiet(int cPage, int numPerPage) {
+		
+		return dtBoardDAO.selectBoardListDiet(cPage, numPerPage);
+	}
 
 	
 

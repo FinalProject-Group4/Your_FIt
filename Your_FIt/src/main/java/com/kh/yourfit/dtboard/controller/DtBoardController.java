@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
+import com.kh.yourfit.board_comment.model.vo.board_comment;
 import com.kh.yourfit.board_file.model.vo.board_file;
 import com.kh.yourfit.common.util.Utils;
 import com.kh.yourfit.dtboard.model.service.DtBoardService;
@@ -50,6 +52,74 @@ public class DtBoardController {
 		model.addAttribute("pageBar", pageBar);
 		
 		return "dtboard/dtBoardList";
+	}
+	
+	@RequestMapping("/dtboard/dtBoardListCal.do")
+	public String selectDtBoardListCal(
+				@RequestParam( value="cPage", required=false, defaultValue="1") int cPage, Model model) {
+		
+		int numPerPage = 10;
+	
+		List<Map<String, String>> list = dtBoardService.selectBoardListCal(cPage, numPerPage);
+		
+		int totalContents = dtBoardService.selectBoardTotalContents();
+		
+		String pageBar = Utils.getPageBar(totalContents, cPage, numPerPage, "dtBoardListCal.do");
+		
+		System.out.println("list : " + list);
+		
+		
+		model.addAttribute("list", list);
+		model.addAttribute("totalContents", totalContents);
+		model.addAttribute("numPerPage", numPerPage);
+		model.addAttribute("pageBar", pageBar);
+		
+		return "dtboard/dtBoardListCal";
+	}
+	
+	@RequestMapping("/dtboard/dtBoardListExe.do")
+	public String selectDtBoardListExe(
+				@RequestParam( value="cPage", required=false, defaultValue="1") int cPage, Model model) {
+		
+		int numPerPage = 10;
+	
+		List<Map<String, String>> list = dtBoardService.selectBoardListExe(cPage, numPerPage);
+		
+		int totalContents = dtBoardService.selectBoardTotalContents();
+		
+		String pageBar = Utils.getPageBar(totalContents, cPage, numPerPage, "dtBoardListExe.do");
+		
+		//System.out.println("list : " + list);
+		
+		
+		model.addAttribute("list", list);
+		model.addAttribute("totalContents", totalContents);
+		model.addAttribute("numPerPage", numPerPage);
+		model.addAttribute("pageBar", pageBar);
+		
+		return "dtboard/dtBoardListExe";
+	}
+	@RequestMapping("/dtboard/dtBoardListDiet.do")
+	public String selectDtBoardListDiet(
+				@RequestParam( value="cPage", required=false, defaultValue="1") int cPage, Model model) {
+		
+		int numPerPage = 10;
+	
+		List<Map<String, String>> list = dtBoardService.selectBoardListDiet(cPage, numPerPage);
+		
+		int totalContents = dtBoardService.selectBoardTotalContents();
+		
+		String pageBar = Utils.getPageBar(totalContents, cPage, numPerPage, "dtBoardListDiet.do");
+		
+		//cPage.System.out.println("list : " + list);
+		
+		
+		model.addAttribute("list", list);
+		model.addAttribute("totalContents", totalContents);
+		model.addAttribute("numPerPage", numPerPage);
+		model.addAttribute("pageBar", pageBar);
+		
+		return "dtboard/dtBoardListDiet";
 	}
 	
 	@RequestMapping("/dtboard/dtBoardForm.do")
@@ -103,14 +173,18 @@ public class DtBoardController {
 	}
 	
 	@RequestMapping("/dtboard/dtBoardView.do")
-	public String dtBoardView(@RequestParam String no, Model model) {
+	public String dtBoardView(@RequestParam String no , Model model) {
 		
 		DtBoard dtboard = dtBoardService.selectOneBoard(no);
 		List<board_file> boardfileList = dtBoardService.selectBoardFileList(no);
+		List<board_comment> bclist = dtBoardService.selectBoardComment(no);
 		
 		model.addAttribute("dtboard", dtboard);
 		model.addAttribute("boardfileList", boardfileList);
-				
+		model.addAttribute("bclist", bclist);
+		
+		System.out.println("bclist" + bclist);
+		
 		return "dtboard/dtBoardView";
 	}
 	
@@ -271,6 +345,75 @@ public class DtBoardController {
 		
 		return check;
 	}
+	
+	@RequestMapping("/dtboard/commentInsert.do") // 게시글번호               // 게시글 내용                  // 댓글 단 회원번호
+	public String insertComment(@RequestParam String dt_No, @RequestParam String coContent, @RequestParam int memberMno, Model model) {
+			
+			board_comment board_comment = new board_comment();
+			board_comment.setBc_Mno(memberMno);
+			board_comment.setBc_Dtno(dt_No);
+			board_comment.setBc_Content(coContent);
+			
+		    int result = dtBoardService.insertboardComment(board_comment);
+		    
+		    String loc = "/dtboard/dtBoardView.do";
+			String msg = "";
+		    System.out.println("result : " + result);
+		    
+		    if( result > 0 ) {
+				msg = "게시판 댓글 성공!";
+			} else {
+				msg = "게시판 댓글 실패!";
+			}
+			
+			model.addAttribute("loc", loc);
+			model.addAttribute("msg", msg);
+			model.addAttribute("dt_No", dt_No);
+			
+		  
+		return "common/msg";
+	}
+	
+	@RequestMapping("/dtboard/commentlist.do") 
+	public String listComment(@RequestParam String dt_No, Model model) {
+		
+		List<board_comment> bclist = dtBoardService.selectBoardComment(dt_No);
+		
+		System.out.println("왜안나와?" + bclist);
+		model.addAttribute("no", dt_No);
+		
+		
+		
+		
+		 return "redirect:/board/boardView.do";
+	
+	 
+	}
+	
+	@RequestMapping("/dtboard/commentUpdate")
+	public String updateComment(@RequestParam int bc_No,
+								@RequestParam String bc_Content,
+								@RequestParam int bc_Mno,
+								@RequestParam String bc_Dtno,
+								board_comment board_comment, Model model) {
+	
+		board_comment.setBc_No(bc_No);
+		board_comment.setBc_Content(bc_Content);
+		board_comment.setBc_Mno(bc_Mno);
+
+		System.out.println("결과값 : " + board_comment);
+		
+		int result = dtBoardService.updateComment(board_comment);
+		
+		model.addAttribute("bc_No", bc_No);
+		model.addAttribute("bc_Content", bc_Content);
+		
+		
+		
+		return null;
+	}
+	
+	
 	
 	
 	

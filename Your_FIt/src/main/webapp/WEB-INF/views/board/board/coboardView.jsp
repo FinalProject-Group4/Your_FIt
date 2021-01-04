@@ -7,8 +7,6 @@
 <script src="${pageContext.request.contextPath }/resources/js/jquery.min.js"></script>
 <html>
 <head>
-<script type="text/javascript" src="경로"></script>
-
 	<meta charset="UTF-8">
 	<title>게시판 상세보기</title>
 	<style>
@@ -43,12 +41,10 @@
 	 $("#btnReply").click(function(){
 		        
 			    var coContent = $("#coContent").val();    //댓글의 내용
-			    var memberMno =  ${member.m_No};    // 세션에서 멤버 no가져와야함
-			    
-			    
+			    var memberMno =  1;    // 세션에서 멤버 no가져와야함
 			    var co_No = '${co_board.co_No}';
 			   /*  var params = {"coContent" : coContent, "member_bno" : member_bno}; */
-			    var params = {"coContent" : coContent, "memberMno" : memberMno, "co_No" : co_No};
+			    var params = {"coContent" : coContent, "memberMno" : 1, "co_No" : co_No};
 			    
 			    $.ajax({
 			        type: "post", //데이터를 보낼 방식
@@ -84,41 +80,9 @@
      
 	});
 
+
+		
 	</script>
-	
-	<script>
-
-
-	    //댓글 삭제
-	   function commentdelete(obj){
-			var bc_no = $(obj).siblings('input').val();
-
-			var co_no = '${co_board.co_No}';
-
-			location.href="${pageContext.request.contextPath}/board/commentdelete.do?bc_no="+bc_no+"&co_no="+co_no;
-		   };
-
-		   // 수정하기 버튼
-	    function commentup(obj){
-			  $(obj).siblings('textarea').removeAttr('readonly');
-			  $(obj).siblings('#commentupdate').css('display','inline');
-			  $(obj).css('display','none');
-		};
-
-		// 수정 완료버튼
-		function commentupdate(obj){
-			var bc_content =  $(obj).siblings('textarea').val();
-			var bc_no = $(obj).siblings('input').val();
-			var co_no = '${co_board.co_No}';
-			
-			location.href="${pageContext.request.contextPath}/board/commentupdate.do?bc_no="+bc_no+"&bc_content="+bc_content+"&co_no="+co_no;	
-		alert("수정이 완료되었습니다!");
-		}
-	
-
-
-	</script>
-	
 </head>
 <body>
 <c:import url="../common/header.jsp"/>
@@ -166,19 +130,7 @@
 	      <p>댓글 <!-- 총개수 --> </p>
 	      <hr />
 	     <c:forEach items="${bclist}" var="bc"> 
-	     		  ${bc.bc_Date } ${bc.nick }
-	     		  <textarea id="bc_Content" name="bc_Content" rows="3" cols="80" readonly>${bc.bc_Content }</textarea>
-	     		
-	     		  <input type="hidden" id="bc_No" name="bc_No" value="${bc.bc_No }" />
-	     		  <input type="hidden" id="bc_Mno" name="bc_Mno" value="${bc.bc_Mno }" />
-	     	
-	     	
-	     			
-		     	  <button type ="button" id="commentup" onclick="commentup(this);">댓글 수정</button>
-		     	  <button type="button" id="commentupdate" onclick="commentupdate(this);" style="display:none;">수정 완료</button>
-		     	  <button type ="button" id="commentdelete" onclick="commentdelete(this);">댓글 삭제</button>
-	     		
-	     		<br>
+	     		  ${bc.bc_No}
             </c:forEach>
 <div id="listReply'> </div>
 

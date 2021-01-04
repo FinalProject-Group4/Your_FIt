@@ -190,9 +190,9 @@
 									aria-expanded="false">다이어트 꿀팁</a>
 									<ul class="dropdown-menu col-3" aria-labelledby="dropdown01">
 										<li><a class="dropdown-item" href="${pageContext.request.contextPath}/dtboard/dtBoardList.do">전체</a></li>
-										<li><a class="dropdown-item" href="#">칼럼</a></li>
-										<li><a class="dropdown-item" href="#">운동</a></li>
-										<li><a class="dropdown-item" href="#">식단</a></li>
+										<li><a class="dropdown-item" href="${pageContext.request.contextPath}/dtboard/dtBoardListCal.do">칼럼</a></li>
+										<li><a class="dropdown-item" href="${pageContext.request.contextPath}/dtboard/dtBoardListExe.do">운동</a></li>
+										<li><a class="dropdown-item" href="${pageContext.request.contextPath}/dtboard/dtBoardListDiet.do">식단</a></li>
 									</ul></li>
 
 								<li class="nav-item dropdown has-submenu col-3"><a

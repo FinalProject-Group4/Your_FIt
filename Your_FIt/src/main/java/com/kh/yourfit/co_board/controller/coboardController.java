@@ -156,7 +156,7 @@ public class coboardController {
 		
 		List<board_comment> bclist = co_boardService.selectBoardComment(co_No);
 		
-		
+		System.out.println("bclist" + bclist);
 	
 		model.addAttribute("no", co_No);
 		
@@ -164,6 +164,37 @@ public class coboardController {
 		
 	 
 	}
+	
+	
+	@RequestMapping("/board/commentupdate.do")    //세부적인 url pattern
+    public String reply_update (@RequestParam int bc_no, @RequestParam String bc_content, @RequestParam String co_no,
+            board_comment board_comment, Model model) throws Exception{
+        
+		
+        board_comment.setBc_No(bc_no);
+        board_comment.setBc_Content(bc_content);
+        
+        int result = co_boardService.updateBoardComment(board_comment);
+ 
+
+		model.addAttribute("no", co_no);
+        
+		return "redirect:/board/boardView.do";
+    }
+	
+	@RequestMapping("/board/commentdelete.do")
+	public String commentdelete (@RequestParam int bc_no, @RequestParam String co_no, Model model) {
+		System.out.println(bc_no);
+		System.out.println(co_no);
+		
+		int result ;
+		result = co_boardService.deleteBoardComment(bc_no);
+		
+		  model.addAttribute("no", co_no);
+		
+		return "redirect:/board/boardView.do";
+	}
+	
 	
 	@RequestMapping("/board/boardView.do")
 	public String boardView(@RequestParam String no, Model model) {

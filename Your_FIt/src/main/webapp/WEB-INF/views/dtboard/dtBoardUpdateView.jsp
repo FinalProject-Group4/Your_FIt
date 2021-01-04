@@ -179,7 +179,7 @@ th {
 				      	</tr>
 				      	<tr>
 				      		<th style="vertical-align: middle;">작성자</th>
-							<td colspan="10" title="">${ dt_board.nick } </td>     		
+							<td colspan="10" title="">${ dtboard.nick } </td>     		
 				      	</tr>
 				      	<tr>
 				      		<th style="vertical-align: middle;">첨부 파일</th>

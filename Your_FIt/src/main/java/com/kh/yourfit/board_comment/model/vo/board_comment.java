@@ -22,5 +22,7 @@ public class board_comment {
 	private String bc_Htno;
 	private String bc_Cono;
 	private int bc_Mno;
+	private String nick;
+	
 		
 }

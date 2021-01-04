@@ -106,6 +106,17 @@ public class co_boardDAOImpl implements co_boardDAO {
 		return sqlSession.selectList("coboardMapper.selectBoardComment", co_No);
 	}
 
+	@Override
+	public int deleteBoardComment(int bc_no) {
+
+		return sqlSession.delete("coboardMapper.deleteBoardComment", bc_no);
+	}
+
+	@Override
+	public int updateBoardComment(board_comment board_comment) {
+		return sqlSession.update("coboardMapper.updateBoardComment", board_comment);
+	}
+
 
 
 

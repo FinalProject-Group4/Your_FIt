@@ -12,7 +12,13 @@
 		<collection property="files" ofType="boardfile">
 			<id property="f_No" column="f_No"/>
 			<result property="f_Cname" column="F_CNAME" />
+			<result property="f_UploadDate" column="F_UPLOADDATE" />
 		</collection>
+		<!--  <collection property="comment" ofType="boardcomment">
+			<id property="bc_Content" column="bc_Content"/>
+			<id property="bc_Date" column="bc_Date" />
+			<id property="bc_Mno" column="bc_Mno" /> 
+		</collection>  -->
 	</resultMap>
 	
 	<select id="selectBoardList" resultMap="resultDtBoard">
@@ -21,8 +27,36 @@
 		JOIN BOARD_FILE ON(DT_BOARD.DT_NO = BOARD_FILE.F_DTNO)
 		JOIN MEMBER ON(DT_MNO = MEMBER.M_NO)
 		WHERE DT_BOARD.STATUS = 'Y'
-		ORDER BY DT_NO DESC
+		ORDER BY DT_NO DESC 
 	</select>
+	
+	<select id="selectBoardListCal" resultMap="resultDtBoard">
+		SELECT *
+		FROM DT_BOARD
+		JOIN BOARD_FILE ON(DT_BOARD.DT_NO = BOARD_FILE.F_DTNO)
+		JOIN MEMBER ON(DT_MNO = MEMBER.M_NO)
+		WHERE DT_BOARD.STATUS = 'Y' AND DT_BOARD.DT_TYPE = '칼럼'
+		ORDER BY DT_NO DESC 
+	</select>
+	
+	<select id="selectBoardListExe" resultMap="resultDtBoard">
+		SELECT *
+		FROM DT_BOARD
+		JOIN BOARD_FILE ON(DT_BOARD.DT_NO = BOARD_FILE.F_DTNO)
+		JOIN MEMBER ON(DT_MNO = MEMBER.M_NO)
+		WHERE DT_BOARD.STATUS = 'Y' AND DT_BOARD.DT_TYPE = '운동'
+		ORDER BY DT_NO DESC 
+	</select>
+	
+	<select id="selectBoardListDiet" resultMap="resultDtBoard">
+		SELECT *
+		FROM DT_BOARD
+		JOIN BOARD_FILE ON(DT_BOARD.DT_NO = BOARD_FILE.F_DTNO)
+		JOIN MEMBER ON(DT_MNO = MEMBER.M_NO)
+		WHERE DT_BOARD.STATUS = 'Y' AND DT_BOARD.DT_TYPE = '식단'
+		ORDER BY DT_NO DESC 
+	</select>
+	
 	<select id="selectBoardTotalContents" resultType="_int">
 		SELECT COUNT(*) FROM DT_BOARD
 	</select>
@@ -89,6 +123,29 @@
 		WHERE F_NO = #{fNo}
 	</delete>
 	
+	<insert id="insertboardComment" parameterType="boardcomment">
+		INSERT INTO BOARD_COMMENT(BC_NO, BC_CONTENT, BC_DATE, BC_TYPE, BC_DTNO, BC_MNO) 
+		VALUES (BOARD_COMMENT_SEQ.NEXTVAL, #{bc_Content}, SYSDATE, 1, #{bc_Dtno}, #{bc_Mno})
+	</insert>	
+	
+	 <select id="selectBoardComment" parameterType="string" resultType="boardcomment">
+		SELECT BC.*, 
+        (SELECT M_NICK FROM MEMBER WHERE M_NO = BC.BC_MNO) NICK,
+        (SELECT DT_NO FROM DT_BOARD WHERE DT_NO = BC.BC_DTNO) NO
+		FROM BOARD_COMMENT BC
+        WHERE BC_DTNO = #{bc_Dtno}
+	</select>
+	
+	<update id="updateComment" parameterType="boardcomment">
+		UPDATE BOARD_COMMENT
+		SET BC_CONTENT = #{bc_Content}
+		WHERE BC_NO = #{bc_No} AND BC_DTNO = #{bc_Dtno}		
+	</update>
+	
+	<delete id="deleteComment" parameterType="boardcomment">
+		DELETE FROM BOARD_COMMENT
+		WHERE BC_NO = #{bc_No} AND BC_DTNO = #{bc_Dtno}
+	</delete>
 </mapper>
 
 

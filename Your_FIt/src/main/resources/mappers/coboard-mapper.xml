@@ -24,7 +24,7 @@
 
 	<select id="selectcoBoardList" resultType="coboard">
 		SELECT C.*, 
-			(SELECT M_NICK FROM MEMBER WHERE M_NO = C.CO_MNO) NICK
+			(SELECT M_NICK FROM MEMBER WHERE M_NO = C.CO_MNO) NICK, (SELECT COUNT(*) FROM BOARD_COMMENT WHERE BC_CONO = C.CO_NO) COMMENTCOUNT
 		FROM CO_BOARD C
         WHERE CO_STATUS = 'Y'
         ORDER BY CO_DATE DESC
@@ -114,8 +114,17 @@
 	</insert>
 	
 	<select id="selectBoardComment" parameterType="string" resultType="boardcomment">
-		SELECT * FROM BOARD_COMMENT WHERE BC_CONO = #{co_No}
+		<!-- SELECT * FROM BOARD_COMMENT WHERE BC_CONO = #{co_No} -->
+		SELECT BC.*,(SELECT M_NICK FROM MEMBER WHERE M_NO = BC.BC_MNO) NICK FROM BOARD_COMMENT BC WHERE BC_CONO = #{co_No}
 	</select>
+	
+	<delete id="deleteBoardComment" parameterType="_int">
+		DELETE FROM BOARD_COMMENT WHERE BC_NO = #{bc_no}
+	</delete>
+	
+	<update id="updateBoardComment" parameterType="boardcomment">
+		UPDATE BOARD_COMMENT SET BC_CONTENT = #{bc_Content} WHERE BC_NO = #{bc_No}
+	</update>
 	
 	<!-- 
 	<insert id="updateAttachment" parameterType="Attachment">

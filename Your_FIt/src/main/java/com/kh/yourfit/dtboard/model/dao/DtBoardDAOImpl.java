@@ -8,6 +8,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.kh.yourfit.board_comment.model.vo.board_comment;
 import com.kh.yourfit.board_file.model.vo.board_file;
 
 import com.kh.yourfit.dtboard.model.vo.DtBoard;
@@ -91,6 +92,48 @@ public class DtBoardDAOImpl implements DtBoardDAO{
 		return sqlSession.delete("dtBoardMapper.deleteFile", fNo);
 	}
 
-	
+	@Override
+	public int insertboardComment(board_comment board_comment) {
+		
+		return sqlSession.insert("dtBoardMapper.insertboardComment", board_comment);
+	}
+
+	@Override
+	public List<board_comment> selectBoardComment(String dt_No) {
+			
+		System.out.println("DAO DT_NO : " + dt_No);
+		
+		return sqlSession.selectList("dtBoardMapper.selectBoardComment", dt_No);
+	}
+
+	@Override
+	public int updateComment(board_comment board_comment) {
+			
+		return sqlSession.update("dtBoardMpper.updateComment", board_comment);
+	}
+
+	@Override
+	public List<Map<String, String>> selectBoardListCal(int cPage, int numPerPage) {
+		RowBounds rows = new RowBounds((cPage-1)*numPerPage, numPerPage);
+		
+		return sqlSession.selectList("dtBoardMapper.selectBoardListCal", null, rows);
+	}
+
+	@Override
+	public List<Map<String, String>> selectBoardListExe(int cPage, int numPerPage) {
+		RowBounds rows = new RowBounds((cPage-1)*numPerPage, numPerPage);
+		
+		return sqlSession.selectList("dtBoardMapper.selectBoardListExe", null, rows);
+	}
+
+	@Override
+	public List<Map<String, String>> selectBoardListDiet(int cPage, int numPerPage) {
+RowBounds rows = new RowBounds((cPage-1)*numPerPage, numPerPage);
+		
+		return sqlSession.selectList("dtBoardMapper.selectBoardListDiet", null, rows);
+	}
+
+
+
 
 }

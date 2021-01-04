@@ -126,6 +126,17 @@ public class co_boardServiceImpl implements co_boardService {
 		return co_boardDAO.selectBoardComment(co_No);
 	}
 
+	@Override
+	public int deleteBoardComment(int bc_no) {
+		return co_boardDAO.deleteBoardComment(bc_no);
+	}
+
+	@Override
+	public int updateBoardComment(board_comment board_comment) {
+
+		return co_boardDAO.updateBoardComment(board_comment);
+	}
+
 
 
 

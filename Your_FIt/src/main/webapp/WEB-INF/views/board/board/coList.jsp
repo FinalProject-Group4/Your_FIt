@@ -21,7 +21,7 @@
 			});
 		});
 	</script>
-<body>$
+<body>
       <c:import url="../common/header.jsp"/>
 	<div id="container">
 	<br><br><br><br><br>
@@ -38,7 +38,7 @@
 					<c:forEach items="${list}" var="co"> 
 					<tr id="${co.co_No}">
 						<td>[${co.co_Type}]</td>
-						<td>${co.co_Title} (${co.commentcount})</td>
+						<td>${co.co_Title}</td>
 						<td>${co.nick}</td>
 						<td>${co.co_Count}</td>
 						<td>${co.co_Date }</td>

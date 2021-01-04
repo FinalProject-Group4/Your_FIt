@@ -27,5 +27,6 @@ public class co_board {
 	private String co_Status;
 	private int co_Mno;
 	private String nick;
+	private int commentcount;
 	private List<board_file> files = new ArrayList<board_file>();
 }

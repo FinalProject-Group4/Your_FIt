@@ -44,6 +44,10 @@ public interface co_boardDAO {
 
 	List<board_comment> selectBoardComment(String co_No);
 
+	int deleteBoardComment(int bc_no);
+
+	int updateBoardComment(board_comment board_comment);
+
 
 
 

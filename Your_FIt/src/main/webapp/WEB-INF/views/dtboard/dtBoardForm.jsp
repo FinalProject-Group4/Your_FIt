@@ -125,19 +125,6 @@
 		return true;
 	}
 	
-	/*부트스트랩 : file 변경시 파일명 보이기 */
-	$(function(){
-		$('[name=upFile]').on('change',function(){
-		    //var fileName = $(this).val();//C:\fakepath\파일명
-		    //var fileName = this.files[0].name;//파일명(javascript)
-		    //var fileName = $(this)[0].files[0].name;//파일명(jquery)
-		    var fileName = $(this).prop('files')[0].name;//파일명(jquery)
-			//console.log($(this).prop('files'));//FileList {0: File(54955), length: 1}
-		    console.log($(this).val());
-		    $(this).next('.custom-file-label').html(fileName);
-		})
-	});
-	
 </script>
 
 
@@ -152,9 +139,19 @@
 				<div class="tableArea">
 				<form action="${pageContext.request.contextPath}/dtboard/dtBoardFormEnd.do"
 				      method="post" onsubmit="return validate();" enctype="multipart/form-data">
-		      		<input type="hidden" name="dt_Mno" value="1" />
-		      		<input type="hidden" name="dt_Type" value="1" />
+		      		<input type="hidden" name="dt_Mno" value="${member.m_No }" />
 				    <table  class="sub_news" border="1px solid gray" align="center" >
+				      	<tr>
+						<th id="column_row">카테고리</th>
+						<td>
+							<select name="dt_Type" id="dt_Type">
+								<option value=>게시판 선택</option>
+								<option value="식단">식단</option>
+								<option value="운동">운동</option>
+								<option value="칼럼">칼럼</option>
+					    	</select>
+						</td>
+					</tr>
 				      	<tr>
 				      		<th style="vertical-align: middle;">제목</th>
 				      		<td colspan="10"><input type="text" size="150" class="form-control tinput" name="dt_Title" style="width:100%;"  placeholder="제목을 입력하세요." /></td>
@@ -182,7 +179,7 @@
 				    <div>
 				    	<button class="btn btn-default"><a href="${pageContext.request.contextPath}/dtboard/dtBoardList.do" style="color: #333; align:left;">목록으로</a></button>
 				      	<button class="btn btn-default" type="reset" id="btnReset">취소</button>
-				    	<button class="btn btn-default" type="submit">등록</button>
+				    	<button class="btn btn-default" id="btnSave" type="submit">등록</button>
 				    </div>
 				    <br />
 				    <br />
