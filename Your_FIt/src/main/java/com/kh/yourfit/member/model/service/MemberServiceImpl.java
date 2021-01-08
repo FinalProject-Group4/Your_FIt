@@ -18,4 +18,23 @@ public class MemberServiceImpl implements MemberService {
 	public Member selectOneMember(String userId) {
 		return memberDAO.selectOneMember(userId);
 	}
+
+	@Override
+	public int idChk(String userId) {
+		HashMap<String,Object> hmap = new HashMap<String, Object>();
+		hmap.put("M_ID", userId);
+		return memberDAO.idChk(hmap);
+	}
+
+	@Override
+	public int nickChk(String userNick) {
+		HashMap<String,Object> hmap = new HashMap<String, Object>();
+		hmap.put("M_NICK", userNick);
+		return memberDAO.nickChk(hmap);
+	}
+
+	@Override
+	public int joinMember(Member member) {
+		return memberDAO.joinMember(member);
+	}
 }

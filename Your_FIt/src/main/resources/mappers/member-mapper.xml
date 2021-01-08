@@ -4,9 +4,23 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="memberMapper">
 
+	<insert id="joinMember" parameterType="Member">
+		INSERT INTO MEMBER 
+		VALUES( SEQ_MEMBERNO.NEXTVAL, #{m_Id}, #{m_Pwd},
+				#{m_Name}, #{m_Nick}, #{m_Gender}, #{m_Email},
+				#{m_Phone}, #{m_Address}, DEFAULT, DEFAULT)
+	</insert>
+
 	<select id="loginMember" parameterType="string" resultType="Member">
 		SELECT * FROM MEMBER
 		WHERE M_ID = #{userId}
 	</select>
 
+	<select id="idChk" statementType="CALLABLE"	parameterType="hashmap">
+			{ CALL ID_DUP_CHK( #{M_ID, mode=IN, jdbcType=VARCHAR}, #{result, mode=OUT, jdbcType=NUMERIC, javaType=integer} ) }	
+	</select>
+	
+	<select id="nickChk" statementType="CALLABLE"	parameterType="hashmap">
+			{ CALL NICK_DUP_CHK( #{M_NICK, mode=IN, jdbcType=VARCHAR}, #{result, mode=OUT, jdbcType=NUMERIC, javaType=integer} ) }	
+	</select>
 </mapper>

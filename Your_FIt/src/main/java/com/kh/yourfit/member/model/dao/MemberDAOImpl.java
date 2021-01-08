@@ -18,4 +18,21 @@ public class MemberDAOImpl implements MemberDAO {
 	public Member selectOneMember(String userId) {
 		return sqlSession.selectOne("memberMapper.loginMember",userId);
 	}
+
+	@Override
+	public int idChk(HashMap<String, Object> hmap) {
+		sqlSession.selectOne("memberMapper.idChk", hmap);
+		return (Integer) hmap.get("result");
+	}
+
+	@Override
+	public int nickChk(HashMap<String, Object> hmap) {
+		sqlSession.selectOne("memberMapper.nickChk", hmap);
+		return (Integer) hmap.get("result");
+	}
+
+	@Override
+	public int joinMember(Member member) {
+		return sqlSession.insert("memberMapper.joinMember",member);
+	}
 }
