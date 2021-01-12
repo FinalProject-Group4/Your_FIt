@@ -94,23 +94,30 @@ public class MemberController {
 	}
 
 	@RequestMapping("/member/search_action.do")
-	public ModelAndView search_Info(Member member,@RequestParam String userInfo,@RequestParam String phone_address, @RequestParam String userEmail, HttpServletRequest req) {
+	public ModelAndView search_Info(Member member, SessionStatus sessionStatus,
+									@RequestParam String userInfo,	@RequestParam String phone_address,
+									@RequestParam String userEmail,	HttpServletRequest req) {
 		
 		ModelAndView mv = new ModelAndView();
 		String search_info = req.getQueryString();
 		String msg = "";
+		String page_name = "";
+		String user_id = "";
 
 		if (search_info.equals("id_Find")) {
+			page_name="아이디 찾기";
 			Member m = memberService.searchId(phone_address);
 			if (m==null) {
 				msg = "입력하신 정보로 가입된 정보가 없습니다.";
 			} else if(m.getM_Email().equals(userEmail) && m.getM_Name().equals(userInfo)){
+				user_id = m.getM_Id();
 				msg = "가입하신 아이디는 " + m.getM_Id() + " 입니다.";
 			} else {
 				msg = "잘못된 정보를 입력하셨습니다.";
 			}
 			
 		} else {
+			page_name="비밀번호 찾기";
 			Member m = memberService.searchpw(userInfo);
 			if (m==null) {
 				msg = "입력하신 아이디는 존재 하지 않습니다.";
@@ -131,7 +138,7 @@ public class MemberController {
 				SimpleMailMessage message = new SimpleMailMessage();
 				message.setTo(m.getM_Email());
 				message.setSubject("임시 비밀번호 발급");
-				message.setText("임시 비밀번호 : " + key);
+				message.setText("임시 비밀번호 : " + key +"\n 임시비밀번호로 로그인 시 꼭 비밀번호 변경을 해주세요!");
 				mailSender.send(message);
 				
 				// 임시 비밀번호 암호화
@@ -143,6 +150,7 @@ public class MemberController {
 				int result = memberService.updatePassword(member);
 				
 				if (result > 0) {
+					user_id = m.getM_Id();
 					msg = "임시 비밀번호가 발급 되었습니다. 메일을 확인하세요.";
 				} else {
 					msg = "오류가 발생했습니다. 관리자에게 문의 하세요.";
@@ -152,6 +160,10 @@ public class MemberController {
 			}
 		}
 		
+		if (!sessionStatus.isComplete()) {sessionStatus.setComplete();}
+		
+		mv.addObject("user_id",user_id);
+		mv.addObject("page_name",page_name);
 		mv.addObject("msg",msg);
 		mv.setViewName("member/searchForm");
 		
