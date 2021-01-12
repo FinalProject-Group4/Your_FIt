@@ -107,9 +107,9 @@ a, p, li {
                      <c:choose>
                      <c:when test="${empty member}">
                         <li class="list-inline-item"><a
-                           href="${pageContext.request.contextPath}/member/login.do"><i
+                           href="${pageContext.request.contextPath}/member/page_move.do?login"><i
                               class="fa fa-user-circle-o"></i> 로그인</a></li>
-                        <li class="list-inline-item"><a href="${pageContext.request.contextPath}/member/Join.do"><i
+                        <li class="list-inline-item"><a href="${pageContext.request.contextPath}/member/page_move.do?join"><i
                               class="fa fa-user-circle-o"></i> 회원가입</a></li>
                      </c:when>
                      <c:when test="${!empty member and member.m_Id eq 'admin' || !empty member and member.m_Id eq 'ADMIN'}">

@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>로그인</title>
+	<title>로그인</title>
 <style>
 	#id_area, #pwd_area{
 		height: 75px;
@@ -33,13 +33,13 @@
 </style>
 </head>
 <body>
+
 	<c:import url="../common/header.jsp" />
 	<div class="container">
 		<div class="row">
 			<div class="col-12" id="login_area">
 				<form class="form-signin" action="${pageContext.request.contextPath}/member/login_action.do" method="post">
 					<h1 class="h1 font-weight-normal" id="login_text"><br />로그인<br /><br /></h1>
-					
 					<div class="col-6 offset-3" id="id_area">
 						<div class="row">
 							<div class="col-4">					
@@ -52,7 +52,7 @@
 					</div>
 					<div class="col-6 offset-3" id="pwd_area">
 						<div class="row">
-							<div class="col-4">				
+							<div class="col-4">
 								<label for="userPwd" id="pwd_label">Password : </label>
 							</div>
 							<div class="col-8">
@@ -60,19 +60,31 @@
 							</div>
 						</div>
 					</div>
-					<div class="col-6 offset-3" id="find_info">
-						<a href="#">아이디 찾기</a> | <a href="#">비밀번호 찾기</a>
-					</div>
+						<div class="col-6 offset-3" id="find_info">
+							<a href="#" onclick="openWin('id_Find');">아이디 찾기</a> | <a href="#" onclick="openWin('pw_Find');">비밀번호 찾기</a>
+						</div>
 					
-					<div class="col-2 offset-5" id="btn_area">
-						<button class="btn btn-lg btn-primary btn-block" type="submit">로그인</button>
+						<div class="col-4 offset-4" id="btn_area">
+							<button class="btn btn-lg btn-primary btn-block" type="submit">로그인</button>
 						<br><br><br><br>
 					</div>
 				</form>
 			</div>
 		</div>
 	</div>
-	<c:import url="../common/footer.jsp" />
-</body>
 
+	<c:import url="../common/footer.jsp" />
+
+</body>
+	<script>
+		function openWin(page_info){
+			
+			var url = "${pageContext.request.contextPath}/member/page_move.do?" + page_info;
+
+			window.open(url,'_blank','menubar=no');
+			
+		};
+
+		
+	</script>
 </html>

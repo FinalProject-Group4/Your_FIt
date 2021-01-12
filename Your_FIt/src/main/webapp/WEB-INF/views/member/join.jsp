@@ -235,6 +235,7 @@ label {
 							<div class="col-3" style="margin: 0; padding: 0; width: 100px;">
 								<input class="form-control" type="text" id="phone_last_text" maxlength="4" style="width: 100px;" required>
 							</div>
+								<p  class="col-12" id="userPhone_chk"></p>
 								<input type="hidden" id="phone_address" name="m_Phone" value=0 />
 								<input type="hidden" id="phone2_ok" name="phone2_ok" />
 						</div>
@@ -299,7 +300,7 @@ label {
 		$('#userId').keyup(function(e) {
 
 							var reg_id_first = /[^a-zA-z]/g;
-							var reg_id = /^[a-zA-z0-9]{6,15}$/;
+							var reg_id = /^[a-zA-z0-9]{5,15}$/;
 							var str_id = $(this).val();
 
 							if (reg_id_first.test(str_id.charAt(0))) {
@@ -336,7 +337,7 @@ label {
 
 							} else {
 
-								$('#id_chk').html('아이디는 알파벳과 숫자로 구성되며 <br>6자 이상이여야 합니다.');
+								$('#id_chk').html('아이디는 알파벳과 숫자로 구성되며 <br>5자 이상이여야 합니다.');
 								$('#id_chk').css('color', 'red');
 								$(this).val(str_id.replace(reg_id, ''));
 								$('#id_ok').val(0);
@@ -425,17 +426,12 @@ label {
 											dataType : "json",
 											success : function(data) {
 												if (data.isUsable == true) {
-													$('#userNick_chk').html(
-															'사용 가능한 닉네임 입니다.');
-													$('#userNick_chk').css(
-															'color', 'green');
+													$('#userNick_chk').html('사용 가능한 닉네임 입니다.');
+													$('#userNick_chk').css('color', 'green');
 													$('#Nick_ok').val(1);
 												} else {
-													$('#userNick_chk')
-															.html(
-																	'사용중인 닉네임 입니다. 다시 입력해 주세요.');
-													$('#userNick_chk').css(
-															'color', 'red');
+													$('#userNick_chk').html('사용중인 닉네임 입니다. 다시 입력해 주세요.');
+													$('#userNick_chk').css('color', 'red');
 													$('#Nick_ok').val(0);
 												}
 											},
@@ -681,12 +677,42 @@ label {
 			var reg_phone = /[^0-9]/g;
 			var str_phone = $(this).val();
 			var phone_num = $('#phone_middle_text').val()+$('#phone_last_text').val();
+			var phone_all_num = $('#phone_first_text').val() + "-" + $('#phone_middle_text').val() + "-" + $('#phone_last_text').val();
 			
 			if (reg_phone.test(str_phone)) {
+				
 				$(this).val(str_phone.replace(reg_phone, ''));
-			} else if(phone_num.length>6){
-				$('#phone2_ok').val(1);
+				
+			} else if(phone_num.length>6 && $('#phone1_ok').val() != 1){
+				
+				$('#userPhone_chk').html('연락처 첫번째 자리를 선택해 주세요.');
+				$('#userPhone_chk').css('color', 'red');
+				$('#phone2_ok').val(0);
+				
+			} else if(phone_num.length>6 && $('#phone1_ok').val() == 1){
+				
+				$.ajax({
+					url : "${pageContext.request.contextPath}/member/phoneChk.do",
+					data : { userPhone : phone_all_num },
+					dataType : "json",
+					success : function(data) {
+						if (data.isUsable == true) {
+							$('#userPhone_chk').html('사용 가능한 연락처 입니다.');
+							$('#userPhone_chk').css('color', 'green');
+							$('#phone2_ok').val(1);
+						} else {
+							$('#userPhone_chk').html('사용중인 연락처 입니다.<br> 아이디 찾기를 진행 해 주세요');
+							$('#userPhone_chk').css('color', 'red');
+							$('#phone2_ok').val(0);
+						}
+					},
+					error : function() {
+						console.log("ajax 처리 실패");
+					}
+				});
 			} else{
+				$('#userPhone_chk').html('올바른 연락처를 입력해 주세요.');
+				$('#userPhone_chk').css('color', 'red');
 				$('#phone2_ok').val(0);
 			}
 		});
@@ -812,7 +838,7 @@ label {
 
 			} else if($("#phone2_ok").val()==0){
 
-		        alert("정확한 핸드폰 번호를 입력해 주세요!");
+		        alert("사용가능한 연락처를 입력해 주세요!");
 		        $('#phone_middle_text').focus();
 		        return false();
 		        

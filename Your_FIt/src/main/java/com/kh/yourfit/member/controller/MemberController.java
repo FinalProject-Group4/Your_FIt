@@ -27,141 +27,229 @@ import com.kh.yourfit.common.exception.MemberException;
 import com.kh.yourfit.member.model.service.MemberService;
 import com.kh.yourfit.member.model.vo.Member;
 
-
 @SessionAttributes(value = { "member" })
 @Controller
 public class MemberController {
-	
+
 	@Autowired
 	private BCryptPasswordEncoder bcryptPasswordEncoder;
-	
+
 	@Autowired
 	private MemberService memberService;
-	
-	@Autowired 
+
+	@Autowired
 	private JavaMailSenderImpl mailSender;
 
+	@RequestMapping("/member/page_move.do")
+	public ModelAndView page_move(HttpServletRequest req) {
 
-	@RequestMapping("/member/login.do")
-	public String login_page() {
+		ModelAndView mv = new ModelAndView();
 
-		return "member/login";
+		String page_info = req.getQueryString();
+		String page_name = "";
+
+		if (page_info.equals("id_Find")) {
+			page_name = "아이디 찾기";
+			mv.setViewName("member/searchForm");
+		} else if (page_info.equals("pw_Find")) {
+			page_name = "비밀번호 찾기";
+			mv.setViewName("member/searchForm");
+		} else if (page_info.equals("login")) {
+			mv.setViewName("member/login");
+		} else{
+			mv.setViewName("member/join");
+		}
+		
+		mv.addObject("page_info", page_info);
+		mv.addObject("page_name", page_name);
+		
+		return mv;
 	}
 	
 	@RequestMapping("/member/login_action.do")
-	public ModelAndView login_action( @RequestParam String userId, @RequestParam String userPwd) {
-		
+	public ModelAndView login_action(@RequestParam String userId, @RequestParam String userPwd) {
+
 		ModelAndView mv = new ModelAndView();
-		
-		String loc= "/";
-		String msg= "";
-		
+		String loc = "/";
+		String msg = "";
+
 		Member m = memberService.selectOneMember(userId);
-		
+
 		if (m == null) {
 			msg = "존재하지 않는 아이디 입니다.";
-		}  else {
+		} else {
 			if (bcryptPasswordEncoder.matches(userPwd, m.getM_Pwd())) {
 				msg = "로그인에 성공하였습니다.";
-				mv.addObject("member",m);
+				mv.addObject("member", m);
 			} else {
 				msg = "비밀번호가 일치하지 않습니다.";
 			}
 		}
-		
-		mv.addObject("msg",msg);
-		mv.addObject("loc",loc);
-		
+		mv.addObject("msg", msg);
+		mv.addObject("loc", loc);
+
 		mv.setViewName("common/msg");
-		
+
 		return mv;
 	}
 
-	@RequestMapping("/member/Logout.do")
-	public String memberLogout(SessionStatus sessionStatus) {
+	@RequestMapping("/member/search_action.do")
+	public ModelAndView search_Info(Member member,@RequestParam String userInfo,@RequestParam String phone_address, @RequestParam String userEmail, HttpServletRequest req) {
 		
-		if ( !sessionStatus.isComplete() ) {
-			sessionStatus.setComplete();
+		ModelAndView mv = new ModelAndView();
+		String search_info = req.getQueryString();
+		String msg = "";
+
+		if (search_info.equals("id_Find")) {
+			Member m = memberService.searchId(phone_address);
+			if (m==null) {
+				msg = "입력하신 정보로 가입된 정보가 없습니다.";
+			} else if(m.getM_Email().equals(userEmail) && m.getM_Name().equals(userInfo)){
+				msg = "가입하신 아이디는 " + m.getM_Id() + " 입니다.";
+			} else {
+				msg = "잘못된 정보를 입력하셨습니다.";
+			}
+			
+		} else {
+			Member m = memberService.searchpw(userInfo);
+			if (m==null) {
+				msg = "입력하신 아이디는 존재 하지 않습니다.";
+			} else if(m.getM_Email().equals(userEmail) && m.getM_Phone().equals(phone_address)){
+				
+				// 랜덤 키 생성
+				Random random = new Random();
+				String key = "";
+
+				for (int i = 0; i < 3; i++) {
+					int index = random.nextInt(25) + 65; // A~Z까지 랜덤 알파벳 생성
+					key += (char) index;
+				}
+				int numIndex = random.nextInt(8999) + 1000; // 4자리 정수를 생성
+				key += numIndex;
+				
+				// 메일 보내기
+				SimpleMailMessage message = new SimpleMailMessage();
+				message.setTo(m.getM_Email());
+				message.setSubject("임시 비밀번호 발급");
+				message.setText("임시 비밀번호 : " + key);
+				mailSender.send(message);
+				
+				// 임시 비밀번호 암호화
+				String encryptPassword = bcryptPasswordEncoder.encode(key);
+				
+				// 암호화된 비밀번호 업데이트
+				member.setM_Id(m.getM_Id());
+				member.setM_Pwd(encryptPassword);
+				int result = memberService.updatePassword(member);
+				
+				if (result > 0) {
+					msg = "임시 비밀번호가 발급 되었습니다. 메일을 확인하세요.";
+				} else {
+					msg = "오류가 발생했습니다. 관리자에게 문의 하세요.";
+				}
+			} else {
+				msg = "잘못된 정보를 입력하셨습니다.";
+			}
 		}
 		
+		mv.addObject("msg",msg);
+		mv.setViewName("member/searchForm");
+		
+		return mv;
+	}
+	
+	@RequestMapping("/member/Logout.do")
+	public String memberLogout(SessionStatus sessionStatus) {
+
+		if (!sessionStatus.isComplete()) {
+			sessionStatus.setComplete();
+		}
+
 		return "redirect:/";
 	}
-	
-	@RequestMapping("/member/Join.do")
-	public String memberJoin() {
-		return "member/join";
-	}
-	
+
 	@RequestMapping("/member/memberJoin.do")
-	public String memberJoin(Member member, Model model,SessionStatus sessionStatus) {
-		
+	public String memberJoin(Member member, Model model, SessionStatus sessionStatus) {
+
 		String plainPassword = member.getM_Pwd();
 		String encryptPassword = bcryptPasswordEncoder.encode(plainPassword);
-		
+
 		member.setM_Pwd(encryptPassword);
-		
+
 		try {
-			
+
 			int result = memberService.joinMember(member);
-			
+
 			String loc = "/";
 			String msg = "";
-			
+
 			if (result > 0) {
 				msg = "회원 가입 성공";
 			} else {
 				msg = "회원 가입 실패";
 			}
-			
-			model.addAttribute("loc",loc);
-			model.addAttribute("msg",msg);
-			
-		} catch (Exception e){ 
-			
+
+			model.addAttribute("loc", loc);
+			model.addAttribute("msg", msg);
+
+		} catch (Exception e) {
+
 			System.out.println("회원 가입 에러 발생!!");
-			
+
 			throw new MemberException(e.getMessage());
-			
+
 		}
-		if ( !sessionStatus.isComplete() ) {
+		if (!sessionStatus.isComplete()) {
 			sessionStatus.setComplete();
 		}
-	
+
 		return "common/msg";
 
 	}
-	
+
 	@RequestMapping("/member/idChk.do")
 	@ResponseBody
-	public Map<String, Object> idChk(@RequestParam String userId){
-		
-		System.out.println(userId);
+	public Map<String, Object> idChk(@RequestParam String userId) {
+
 		Map<String, Object> map = new HashMap<String, Object>();
-		
+
 		boolean isUsable = memberService.idChk(userId) == 0 ? true : false;
-		
+
 		map.put("isUsable", isUsable);
-		
-		return map; 
+
+		return map;
 	}
-	
+
 	@RequestMapping("/member/nickChk.do")
 	@ResponseBody
-	public Map<String, Object> nickChk(@RequestParam String userNick){
+	public Map<String, Object> nickChk(@RequestParam String userNick) {
+
+		Map<String, Object> map = new HashMap<String, Object>();
+
+		boolean isUsable = memberService.nickChk(userNick) == 0 ? true : false;
+
+		map.put("isUsable", isUsable);
+
+		return map;
+	}
+	
+	@RequestMapping("/member/phoneChk.do")
+	@ResponseBody
+	public Map<String, Object> phoneChk(@RequestParam String userPhone) {
 		
-		System.out.println(userNick);
 		Map<String, Object> map = new HashMap<String, Object>();
 		
-		boolean isUsable = memberService.nickChk(userNick) == 0 ? true : false;
+		boolean isUsable = memberService.phoneChk(userPhone) == 0 ? true : false;
 		
 		map.put("isUsable", isUsable);
 		
-		return map; 
-	} 
-	
+		return map;
+	}
+
 	@RequestMapping("/member/CheckMail.do")
 	@ResponseBody
 	public Map<String, Object> SendMail(String mail, HttpSession session) {
+
 		Map<String, Object> map = new HashMap<>();
 		Random random = new Random();
 		String key = "";
